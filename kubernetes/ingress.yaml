@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: geoserver-ingress
+spec:
+  rules:
+    - host: geoserver.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: geoserver
+                port:
+                  number: 80

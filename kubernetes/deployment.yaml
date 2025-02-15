@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geoserver
+  labels:
+    app: geoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geoserver
+  template:
+    metadata:
+      labels:
+        app: geoserver
+    spec:
+      containers:
+        - name: geoserver
+          image: kartoza/geoserver:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GEOSERVER_ADMIN_PASSWORD
+              value: "geoserver"
+          volumeMounts:
+            - mountPath: "/var/geoserver"
+              name: geoserver-data
+      volumes:
+        - name: geoserver-data
+          persistentVolumeClaim:
+            claimName: geoserver-pvc
