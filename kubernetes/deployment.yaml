@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: geoserver
+  namespace: geoserver
   labels:
     app: geoserver
 spec:
@@ -18,7 +19,10 @@ spec:
         - name: geoserver
           image: kartoza/geoserver:latest
           ports:
-            - containerPort: 8080
+            - name: geoserver
+              containerPort: 8080
+            - name: http
+              containerPort: 80
           env:
             - name: GEOSERVER_ADMIN_PASSWORD
               value: "geoserver"
