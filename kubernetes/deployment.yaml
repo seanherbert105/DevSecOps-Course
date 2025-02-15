@@ -17,17 +17,15 @@ spec:
     spec:
       containers:
         - name: geoserver
-          image: kartoza/geoserver:latest
+          image: docker.osgeo.org/geoserver:2.26.2
           ports:
             - name: geoserver
               containerPort: 8080
-            - name: http
-              containerPort: 80
           env:
             - name: GEOSERVER_ADMIN_PASSWORD
               value: "geoserver"
           volumeMounts:
-            - mountPath: "/var/geoserver"
+            - mountPath: "/opt/geoserver"
               name: geoserver-data
       volumes:
         - name: geoserver-data
