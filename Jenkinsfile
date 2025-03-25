@@ -10,7 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "/usr/bin/docker docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f Dockerfile ."
+                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f Dockerfile .
                 }
             }
         }
@@ -18,7 +18,7 @@ pipeline {
         stage('Run Trivy Scan') {
             steps {
                 script {
-                    sh "/usr/bin/docker docker run aquasec/trivy image geoserver:latest"
+                    docker run aquasec/trivy image geoserver:latest
                 }
             }
         }
