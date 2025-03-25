@@ -24,7 +24,7 @@ pipeline {
                     sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}"
 
                     // Generate HTML report using Trivy's template
-                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy -c 'trivy image --format template --template "@contrib/html.tpl" -o ${REPORT_HTML} ${IMAGE_NAME}'"
+                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format template --template "@contrib/html.tpl" -o /trivy/${REPORT_HTML} ${IMAGE_NAME}"
                 }
             }
         }
