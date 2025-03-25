@@ -5,8 +5,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker buildx create --use || true' // Ensure buildx is available
-                    sh 'docker buildx build --load -t geoserver:latest -f Dockerfile.geoserver .'
+                    sh 'docker pull docker.osgeo.org/geoserver:2.26.2'
+                    sh 'docker run -it -p 80:8080 docker.osgeo.org/geoserver:2.26.2'
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline {
         stage('Run Trivy Scan') {
             steps {
                 script {
-                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image geoserver:latest'
+                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image docker.osgeo.org/geoserver:2.26.2'
                 }
             }
         }
