@@ -25,4 +25,3 @@ echo "Checking running containers..."
 docker ps --filter "name=jenkins"
 
 echo "Setup complete. Access Jenkins at http://localhost:8080"
-
