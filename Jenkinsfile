@@ -11,8 +11,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker pull ${IMAGE_NAME}'
-                    sh 'docker run -d -p 80:8080 --name geoserver ${IMAGE_NAME}'
+                    sh 'docker exec -it jenkins-docker docker pull ${IMAGE_NAME}'
+                    sh 'docker exec -it jenkins-docker docker run -d -p 80:8080 --name geoserver ${IMAGE_NAME}'
                 }
             }
         }
