@@ -1,12 +1,18 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "docker.osgeo.org/geoserver:2.26.2"
+        REPORT_JSON = "trivy-results.json"
+        REPORT_HTML = "trivy-report.html"
+    }
+
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker pull docker.osgeo.org/geoserver:2.26.2'
-                    sh 'docker run -d -p 80:8080 docker.osgeo.org/geoserver:2.26.2'
+                    sh "docker pull ${IMAGE_NAME}"
+                    sh "docker run -d -p 80:8080 ${IMAGE_NAME}"
                 }
             }
         }
@@ -14,9 +20,30 @@ pipeline {
         stage('Run Trivy Scan') {
             steps {
                 script {
-                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image docker.osgeo.org/geoserver:2.26.2'
+                    // Run Trivy scan and save JSON report
+                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}"
+
+                    // Generate HTML report using Trivy's template
+                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format template --template '@contrib/html.tpl' -o ${REPORT_HTML} ${IMAGE_NAME}"
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            // Archive reports in Jenkins
+            archiveArtifacts artifacts: "${REPORT_JSON}, ${REPORT_HTML}", fingerprint: true
+
+            // Publish HTML report in Jenkins UI
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: '.',
+                reportFiles: REPORT_HTML,
+                reportName: "Trivy Vulnerability Scan Report"
+            ])
         }
     }
 }
