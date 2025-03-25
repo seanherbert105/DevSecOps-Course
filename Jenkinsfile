@@ -15,10 +15,10 @@ pipeline {
             steps {
                 script {
                     // Run Trivy scan and save JSON report
-                    sh 'docker run --rm -v $PWD:/trivy aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}'
+                    sh 'docker run --rm -v $WORKSPACE:/trivy aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}'
 
                     // Generate HTML report using Trivy's template
-                    sh 'docker run --rm -v $PWD:/trivy aquasec/trivy image --format template --template "@contrib/html.tpl" -o /trivy/${REPORT_HTML} ${IMAGE_NAME}'
+                    sh 'docker run --rm -v $WORKSPACE:/trivy aquasec/trivy image --format template --template "@contrib/html.tpl" -o /trivy/${REPORT_HTML} ${IMAGE_NAME}'
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: '.',
+                reportDir: "$WORKSPACE",
                 reportFiles: REPORT_HTML,
                 reportName: "Trivy Vulnerability Scan Report"
             ])
