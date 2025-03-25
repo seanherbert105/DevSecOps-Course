@@ -32,3 +32,18 @@ Next, go into the bin directory and run the bash script getting-started.sh
 ```
 bash getting-started.sh
 ```
+
+Now the Jenkins UI should be available on localhost (which is running on your local computer and not accessible to anyone else).
+```
+http://localhost:8080
+```
+The login information to jenkins is the following.
+
+Username: admin
+
+Password will be in the following directory within the Docker container. Run the following command to execute a command internal to the Docker container. 
+```
+docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+#SKIP CREATING YOUR FIRST ADMIN ACCOUNT
+
