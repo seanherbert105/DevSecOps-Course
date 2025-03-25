@@ -4,15 +4,11 @@ set -e
 
 # Build Jenkins container image with Docker
 echo "Building Jenkins with Docker..."
-docker buildx build -t jenkins/docker:latest -f Dockerfile.jenkins .
+docker buildx build -t jenkins/docker -f Dockerfile.jenkins .
 
 # Define container names and images
-JENKINS_IMAGE="jenkins/docker:latest"
+JENKINS_IMAGE="jenkins/docker"
 TRIVY_IMAGE="aquasec/trivy"
-
-# Pull Jenkins image
-echo "Pulling Jenkins image..."
-docker pull $JENKINS_IMAGE
 
 # Run Jenkins container
 echo "Starting Jenkins container..."
