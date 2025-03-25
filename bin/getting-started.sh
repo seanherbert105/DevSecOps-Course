@@ -22,7 +22,7 @@ docker run \
 
 # Build Jenkins container image with Docker
 echo "Building Jenkins with Docker..."
-docker buildx build -t jenkins/docker -f Dockerfile.jenkins .
+docker buildx build -t jenkins/docker -f Dockerfile .
 
 # Define container names and images
 JENKINS_IMAGE="jenkins/docker"
