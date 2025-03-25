@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker pull docker.osgeo.org/geoserver:2.26.2'
-                    sh 'docker run -it -p 80:8080 docker.osgeo.org/geoserver:2.26.2'
+                    sh 'docker run -p 80:8080 docker.osgeo.org/geoserver:2.26.2'
                 }
             }
         }
