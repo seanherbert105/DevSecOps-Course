@@ -11,8 +11,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker pull ${IMAGE_NAME}"
-                    sh "docker run -d -p 80:8080 ${IMAGE_NAME}"
+                    sh 'docker pull ${IMAGE_NAME}'
+                    sh 'docker run -d -p 80:8080 ${IMAGE_NAME}'
                 }
             }
         }
@@ -21,10 +21,10 @@ pipeline {
             steps {
                 script {
                     // Run Trivy scan and save JSON report
-                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}"
+                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format json -o ${REPORT_JSON} ${IMAGE_NAME}'
 
                     // Generate HTML report using Trivy's template
-                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format template --template "@contrib/html.tpl" -o /trivy/${REPORT_HTML} ${IMAGE_NAME}"
+                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/trivy aquasec/trivy image --format template --template "@contrib/html.tpl" -o /trivy/${REPORT_HTML} ${IMAGE_NAME}'
                 }
             }
         }
