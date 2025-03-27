@@ -43,7 +43,7 @@ Username: admin
 
 Password will be in the following directory within the Docker container. Run the following command to execute a command internal to the Docker container. 
 ```
-docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+docker exec -it jenkins/docker cat /var/jenkins_home/secrets/initialAdminPassword
 ```
-#SKIP CREATING YOUR FIRST ADMIN ACCOUNT
+
 
