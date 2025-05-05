@@ -1,49 +1,65 @@
-# DevSecOps-class
+# Example Voting App
 
-To conduct the hands on learning portion of this class, you must have some type of Linux OS to work on and Docker. WSL is the recommended method to meet this requirement on Windows and MAC has a terminal installed by default. 
+A simple distributed application running across multiple Docker containers.
 
-### Install WSL
+## Getting started
 
-Follow the instructions below to install WSL on your Windows laptop. 
-```
-https://learn.microsoft.com/en-us/windows/wsl/install#prerequisites
-```
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
 
-### Install Docker
+This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
 
-Follow the instructions below to install Docker Desktop on Windows. or MAC laptop. 
-```
-https://docs.docker.com/desktop/setup/install/windows-install/
+Run in this directory to build and run the app:
+
+```shell
+docker compose up
 ```
 
-Follow the instructions below to install Docker Destop on MAC.
-```
-https://docs.docker.com/desktop/setup/install/mac-install/
+The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+
+Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
+
+```shell
+docker swarm init
 ```
 
-### Get started on developing a pipeline
+Once you have your swarm, in this directory run:
 
-Clone the repository into your /tmp file directory. This directory is being used because by default everything will be deleted once your reboot your computer. 
-```
-git clone https://github.com/seanherbert105/DevSecOps-class.git
-```
-
-Next, go into the bin directory and run the bash script getting-started.sh
-```
-bash getting-started.sh
+```shell
+docker stack deploy --compose-file docker-stack.yml vote
 ```
 
-Now the Jenkins UI should be available on localhost (which is running on your local computer and not accessible to anyone else).
-```
-http://localhost:8080
-```
-The login information to jenkins is the following.
+## Run the app in Kubernetes
 
-Username: admin
+The folder k8s-specifications contains the YAML specifications of the Voting App's services.
 
-Password will be in the following directory within the Docker container. Run the following command to execute a command internal to the Docker container. 
-```
-docker exec -it jenkins/docker cat /var/jenkins_home/secrets/initialAdminPassword
+Run the following command to create the deployments and services. Note it will create these resources in your current namespace (`default` if you haven't changed it.)
+
+```shell
+kubectl create -f k8s-specifications/
 ```
 
+The `vote` web app is then available on port 31000 on each host of the cluster, the `result` web app is available on port 31001.
 
+To remove them, run:
+
+```shell
+kubectl delete -f k8s-specifications/
+```
+
+## Architecture
+
+![Architecture diagram](architecture.excalidraw.png)
+
+* A front-end web app in [Python](/vote) which lets you vote between two options
+* A [Redis](https://hub.docker.com/_/redis/) which collects new votes
+* A [.NET](/worker/) worker which consumes votes and stores them in…
+* A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
+* A [Node.js](/result) web app which shows the results of the voting in real time
+
+## Notes
+
+The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
+
+This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
+example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
+deal with them in Docker at a basic level.
