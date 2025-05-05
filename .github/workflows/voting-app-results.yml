@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  Build Voting App Results and Run Trivy Scan:
+  Build-Voting-App-Results-and-Run-Trivy-Scan:
     permissions:
       contents: read
       security-events: write
