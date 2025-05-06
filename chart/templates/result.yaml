@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.result.name }}
+  name: {{ .Values.result.name }}
+spec:
+  type: NodePort
+  ports:
+  - name: {{ .Values.result.serviceName }}
+    port: {{ .Values.result.port }}
+    targetPort: {{ .Values.result.targetPort }}
+    nodePort: {{ .Values.result.nodePort }}
+  selector:
+    app: {{ .Values.result.name }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.result.name }}
+  name: {{ .Values.result.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.result.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.result.name }}
+    spec:
+      containers:
+      - image: {{ .Values.githubRegistry }}/{{ .Values.result.image }}:{{ .Values.result.tag }}
+        name: {{ .Values.result.name }}
+        ports:
+        - containerPort: {{ .Values.result.targetPort }}
+          name: {{ .Values.result.serviceName }}

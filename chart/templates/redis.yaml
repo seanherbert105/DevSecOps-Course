@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.redis.name }}
+  name: {{ .Values.redis.name }}
+spec:
+  type: ClusterIP
+  ports:
+  - name: {{ .Values.redis.serviceName }}
+    port: {{ .Values.redis.port }}
+    targetPort: {{ .Values.redis.targetPort }}
+  selector:
+    app: {{ .Values.redis.name }}
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: {{ .Values.redis.name }}
+  name: {{ .Values.redis.name }}
+spec:
+  replicas: {{ .Values.redis.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.redis.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.redis.name }}
+    spec:
+      containers:
+      - image: {{ .Values.dockerRegistry }}/{{ .Values.redis.image }}:{{ .Values.redis.tag }}
+        name: {{ .Values.redis.name }}
+        ports:
+        - containerPort: {{ .Values.redis.port }}
+          name: {{ .Values.redis.serviceName }}
+        volumeMounts:
+        - mountPath: /data
+          name: {{ .Values.redis.data }}
+      volumes:
+      - name: {{ .Values.redis.data }}
+        emptyDir: {} 

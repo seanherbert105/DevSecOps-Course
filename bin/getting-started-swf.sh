@@ -2,55 +2,70 @@
 
 set -e
 
-# Create Jenkins Docker network
-docker network create jenkins
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
 
-# Run Docker in Docker container
-docker run \
-  --name jenkins-docker \
-  --rm \
-  --detach \
-  --privileged \
-  --network jenkins \
-  --network-alias docker \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume jenkins-docker-certs:/certs/client \
-  --volume jenkins-data:/var/jenkins_home \
-  --publish 2376:2376 \
-  docker:dind \
-  --storage-driver overlay2
+echo "🚀 Starting Helm, Traefik, and ArgoCD setup..."
 
-# Build Jenkins container image with Docker
-echo "Building Jenkins with Docker..."
-docker buildx build -t jenkins/docker -f Dockerfile .
+# Install Helm if not installed
+if ! command_exists helm; then
+  echo "🔧 Helm not found. Installing..."
+  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+else
+  echo "✅ Helm is already installed."
+fi
 
-# Define container names and images
-JENKINS_IMAGE="jenkins/docker"
-TRIVY_IMAGE="aquasec/trivy"
+# Create namespace for Traefik
+echo "📦 Installing Traefik Ingress Controller..."
+kubectl create namespace traefik --dry-run=client -o yaml | kubectl apply -f -
 
-# Run Jenkins container
-echo "Starting Jenkins container..."
-docker run \
-  --name jenkins-blueocean \
-  --restart=on-failure \
-  --detach \
-  --network jenkins \
-  --env DOCKER_HOST=tcp://docker:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
-  --publish 8080:8080 \
-  --publish 50000:50000 \
-  --volume jenkins-data:/var/jenkins_home \
-  --volume jenkins-docker-certs:/certs/client:ro \
-  --volume /var/run/docker.sock:/var/run/docker.sock \
-  jenkins/docker
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
 
-# Pull Trivy image
-echo "Pulling Trivy image..."
-docker pull $TRIVY_IMAGE
+helm upgrade --install traefik traefik/traefik \
+  --namespace traefik \
+  --set ingressClass.enabled=true \
+  --set ingressClass.isDefaultClass=true \
+  --set service.type=LoadBalancer \
+  --set dashboard.enabled=true \
+  --set ports.websecure.expose=true
 
-# Verify containers are running
-echo "Checking running containers..."
-docker ps --filter "name=jenkins"
+# Expose Traefik dashboard via IngressRoute
+cat <<EOF | kubectl apply -f -
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(\`traefik.localhost\`)
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+EOF
 
-echo "Setup complete. Access Jenkins at http://localhost:8080"
+# Create namespace for ArgoCD
+echo "📦 Installing ArgoCD..."
+kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+
+helm upgrade --install argocd argo/argo-cd \
+  --namespace argocd \
+  --set server.service.type=LoadBalancer
+
+echo "✅ Installation complete!"
+
+echo -e "\n🔑 To get the ArgoCD admin password, run:"
+echo "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d && echo"
+
+echo -e "\n🌐 Access UIs:"
+echo "➡️ Traefik Dashboard: http://traefik.localhost (set this in /etc/hosts as 127.0.0.1 traefik.localhost)"
+echo "➡️ ArgoCD UI: http://localhost:<ARGOCD_PORT>  (check with: kubectl -n argocd get svc argocd-server)"

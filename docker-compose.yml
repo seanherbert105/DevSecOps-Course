@@ -6,7 +6,7 @@
 
 services:
   vote:
-    image: dockersamples/examplevotingapp_vote
+    image: ghcr.io/seanherbert105/devsecops-course/voting-app/vote:main
     depends_on:
       redis:
         condition: service_healthy 
@@ -17,7 +17,7 @@ services:
       - back-tier
 
   result:
-    image: dockersamples/examplevotingapp_result
+    image: ghcr.io/seanherbert105/devsecops-course/voting-app/result:main
     depends_on:
       db:
         condition: service_healthy 
@@ -28,7 +28,7 @@ services:
       - back-tier
 
   worker:
-    image: dockersamples/examplevotingapp_worker
+    image: ghcr.io/seanherbert105/devsecops-course/voting-app/worker:main
     depends_on:
       redis:
         condition: service_healthy 
@@ -38,31 +38,47 @@ services:
       - back-tier
 
   redis:
-    image: redis:alpine
-    volumes:
-      - "./healthchecks:/healthchecks"
+    image: docker.io/redis:alpine
     healthcheck:
-      test: /healthchecks/redis.sh
-      interval: "5s"
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - "redis-data:/var/lib/postgresql/data"
     networks:
       - back-tier
 
   db:
-    image: postgres:15-alpine
+    image: docker.io/postgres:15-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     volumes:
       - "db-data:/var/lib/postgresql/data"
-      - "./healthchecks:/healthchecks"
-    healthcheck:
-      test: /healthchecks/postgres.sh
-      interval: "5s"
     networks:
       - back-tier
 
+  seed:
+    image: ghcr.io/seanherbert105/devsecops-course/voting-app/seed-data:main
+    profiles: ["seed"]
+    depends_on:
+      vote:
+        condition: service_healthy 
+    networks:
+      - front-tier
+    restart: "no"
+
 volumes:
   db-data:
+  redis-data:
 
 networks:
   front-tier:

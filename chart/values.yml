@@ -1,0 +1,52 @@
+# Global Configuration
+githubRegistry: ghcr.io
+dockerRegistry: docker.io
+
+vote:
+  name: vote
+  serviceName: vote-service
+  image: seanherbert105/devsecops-course/voting-app/vote
+  tag: main
+  replicaCount: 1
+  port: 8080
+  targetPort: 80
+  nodePort: 3100
+
+result:
+  name: result
+  serviceName: result-service
+  image: seanherbert105/devsecops-course/voting-app/result
+  tag: main
+  replicaCount: 1
+  port: 8001
+  targetPort: 80
+  nodePort: 3100
+
+worker:
+  name: worker
+  image: seanherbert105/devsecops-course/voting-app/worker
+  tag: main
+  replicaCount: 1
+  port: 5432
+  targetPort: 5432
+
+redis:
+  name: redis
+  serviceName: redis-service
+  data: redis-data
+  image: redis
+  tag: alpine
+  replicaCount: 1
+  port: 5432
+  targetPort: 5432
+
+db:
+  name: db
+  serviceName: db-service
+  configMap: db-config
+  data: db-data
+  image: postgres
+  tag: 15-alpine
+  replicaCount: 1
+  port: 5432
+  targetPort: 5432
