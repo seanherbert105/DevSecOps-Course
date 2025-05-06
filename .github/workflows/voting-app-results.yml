@@ -1,4 +1,4 @@
-name: Voting-App-Results
+name: Voting-App-Result
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  Build-Voting-App-Results-and-Run-Trivy-Scan:
+  Build-Voting-App-Result-and-Run-Trivy-Scan:
     permissions:
       contents: read
       security-events: write
@@ -45,7 +45,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/voting-app/result
  
       - name: Build and push Docker image
         if: ${{ github.event_name != 'pull_request' }}
