@@ -56,10 +56,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./voting-app/result
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          context: ${{ github.workspace }}
+          push: true
+          tags: ${{ github.repository }}:latest
+          labels: latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
