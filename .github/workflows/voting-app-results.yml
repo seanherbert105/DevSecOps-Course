@@ -53,12 +53,12 @@ jobs:
         with:
           context: ${{ github.workspace }}/voting-app/result
           push: true
-          tags:  ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: 'docker.osgeo.org/geoserver:2.26.2'
+          image-ref: '${{ env.REGISTRY }}/${{ github.repository }}/voting-app/result:${{ steps.meta.outputs.tags }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
