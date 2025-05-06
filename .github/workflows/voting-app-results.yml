@@ -61,9 +61,9 @@ jobs:
           image-ref: '${{ steps.meta.outputs.tags }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
+          output: 'voting-app-result.sarif'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: 'voting-app-result.sarif'
