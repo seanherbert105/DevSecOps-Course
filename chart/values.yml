@@ -37,8 +37,8 @@ redis:
   image: redis
   tag: alpine
   replicaCount: 1
-  port: 5432
-  targetPort: 5432
+  port: 6379
+  targetPort: 6379
 
 db:
   name: db
