@@ -1,20 +1,19 @@
-resource "kubernetes_secret" "example" {
-  metadata {
-    name = "docker-cfg"
-  }
+variable "registry_server" {
+  type    = string
+  default = "ghcr.io"
+}
 
-  type = "kubernetes.io/dockerconfigjson"
+variable "registry_username" {
+  type    = string
+  default = ""
+}
 
-  data = {
-    ".dockerconfigjson" = jsonencode({
-      auths = {
-        "${var.registry_server}" = {
-          "username" = var.registry_username
-          "password" = var.registry_password
-          "email"    = var.registry_email
-          "auth"     = base64encode("${var.registry_username}:${var.registry_password}")
-        }
-      }
-    })
-  }
+variable "registry_password" {
+  type    = string
+  default = ""
+}
+
+variable "registry_email" {
+  type    = string
+  default = ""
 }
