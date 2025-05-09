@@ -10,7 +10,7 @@ resource "kubernetes_service" "result-service" {
     port {
       port        = 8001
       target_port = 80
-      node_port   = 3100
+      node_port   = 31000
     }
 
     type = "NodePort"

@@ -18,10 +18,6 @@ resource "kubernetes_stateful_set_v1" "db" {
     service_name="db-service"
     replicas=1
 
-    image_pull_secrets {
-      name = kubernetes_secret.github_registry.metadata[0].name
-    }
-
     selector {
       match_labels = {
         k8s-app="db"
@@ -38,6 +34,10 @@ resource "kubernetes_stateful_set_v1" "db" {
       }
 
       spec {
+        image_pull_secrets {
+          name = kubernetes_secret.github_registry.metadata[0].name
+        }
+
         container {
           name="db"
           image="postgres:15-alpine"

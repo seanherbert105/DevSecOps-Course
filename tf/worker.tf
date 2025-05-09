@@ -9,10 +9,6 @@ resource "kubernetes_deployment" "worker" {
   spec {
     replicas = 1
 
-    image_pull_secrets {
-      name = kubernetes_secret.github_registry.metadata[0].name
-    }
-
     selector {
       match_labels = {
         test = "worker"
@@ -27,6 +23,10 @@ resource "kubernetes_deployment" "worker" {
       }
 
       spec {
+        image_pull_secrets {
+          name = kubernetes_secret.github_registry.metadata[0].name
+        }
+
         container {
           image = "seanherbert105/devsecops-course/voting-app/worker:main"
           name  = "worker"

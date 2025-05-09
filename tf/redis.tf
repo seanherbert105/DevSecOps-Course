@@ -18,10 +18,6 @@ resource "kubernetes_stateful_set_v1" "redis" {
     service_name="redis-service"
     replicas=1
 
-    image_pull_secrets {
-      name = kubernetes_secret.github_registry.metadata[0].name
-    }
-
     selector {
       match_labels = {
         k8s-app="redis"
@@ -38,6 +34,10 @@ resource "kubernetes_stateful_set_v1" "redis" {
       }
 
       spec {
+        image_pull_secrets {
+          name = kubernetes_secret.github_registry.metadata[0].name
+        }
+
         container {
           name="redis"
           image="redis:alpine"
