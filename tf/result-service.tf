@@ -1,7 +1,8 @@
-resource "kubernetes_service" "result-service" {
+resource "kubernetes_service_v1" "result-service" {
   metadata {
     name = "result"
   }
+
   spec {
     selector = {
       app = "result"

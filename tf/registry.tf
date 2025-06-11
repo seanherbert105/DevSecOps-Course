@@ -1,4 +1,4 @@
-resource "kubernetes_secret" "github_registry" {
+resource "kubernetes_secret_v1" "github_registry" {
   metadata {
     name = "docker-cfg"
   }

@@ -1,7 +1,8 @@
-resource "kubernetes_service" "vote-service" {
+resource "kubernetes_service_v1" "vote-service" {
   metadata {
     name = "vote"
   }
+  
   spec {
     selector = {
       app = "vote"

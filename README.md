@@ -1,53 +1,56 @@
-# Example Voting App
+# DevSecOps Course Labs
+## Getting Started
 
-A simple distributed application running across multiple Docker containers.
+To begin, start by downloading Docker Desktop on your personal computer
 
-## Getting started
+### Lab 1 - Running your first container
 
-Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
+This command will get you started by deploying an NGINX webserver
 
-This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
-
-Run in this directory to build and run the app:
-
-```shell
-docker compose up
+```
+docker run --name nginx-example -d -p 80:80 nginx:1.27.5
 ```
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+This command will execute container to run with the name of nginx-example in a detached state.
+The port exposed will be 80 and will be using the nginx container image version 1.27.5.
 
-## Run the app in Kubernetes
+Once completed, run the following command to stop the container from running. 
 
-The folder k8s-specifications contains the YAML specifications of the Voting App's services.
-
-Run the following command to create the deployments and services. Note it will create these resources in your current namespace (`default` if you haven't changed it.)
-
-```shell
-kubectl create -f k8s-specifications/
+```
+docker stop nginx-example
 ```
 
-The `vote` web app is then available on port 31000 on each host of the cluster, the `result` web app is available on port 31001.
+After, run the following command to remove the container on your laptop.
 
-To remove them, run:
-
-```shell
-kubectl delete -f k8s-specifications/
+```
+docker rm nginx-example
 ```
 
-## Architecture
+### Lab 2 - Running your first container orchestration
 
-![Architecture diagram](architecture.excalidraw.png)
+This one will be really short, but essentially run the following command to deploy the 
+voting application using the following docker-compose.yml file given within the 
+root file directory. 
 
-* A front-end web app in [Python](/vote) which lets you vote between two options
-* A [Redis](https://hub.docker.com/_/redis/) which collects new votes
-* A [.NET](/worker/) worker which consumes votes and stores them in…
-* A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
-* A [Node.js](/result) web app which shows the results of the voting in real time
+```
+docker compose up --detach
+```
 
-## Notes
+If you recieve an error, make sure you're within the DevSecOps-Course directory.
 
-The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
+### Lab 3 - Deploying a Department of Defense Software Factory
 
-This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
-example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
-deal with them in Docker at a basic level.
+Begin first by installing ArgoCD, run the following installation script to begin
+
+```
+kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable
+```
+
+Next will be installing Traefik, that will be our ingress controller which allows access
+to our applications external to the Kubernetes cluster.
+
+```
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm install traefik traefik/traefik
+```

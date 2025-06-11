@@ -27,8 +27,6 @@ worker:
   image: seanherbert105/devsecops-course/voting-app/worker
   tag: main
   replicaCount: 1
-  port: 5432
-  targetPort: 5432
 
 redis:
   name: redis

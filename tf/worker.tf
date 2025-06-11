@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "worker" {
+resource "kubernetes_deployment_v1" "worker" {
   metadata {
     name = "worker"
     labels = {
@@ -24,7 +24,7 @@ resource "kubernetes_deployment" "worker" {
 
       spec {
         image_pull_secrets {
-          name = kubernetes_secret.github_registry.metadata[0].name
+          name = kubernetes_secret_v1.github_registry.metadata[0].name
         }
 
         container {
