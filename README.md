@@ -1,4 +1,8 @@
 # DevSecOps Course Labs
+
+The hands on labs in this course are completely optional, but highly recommended.
+There is no better way to understand how this works in further detail than to try.
+
 ## Getting Started
 
 To begin, start by downloading Docker Desktop on your personal computer
