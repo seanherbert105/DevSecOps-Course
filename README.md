@@ -82,7 +82,9 @@ Begin first by installing Traefik as our ingress controller, this allows for ext
 kubectl create namespace traefik
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm upgrade --install traefik traefik/traefik -n traefik
+helm upgrade --install traefik traefik/traefik \
+    --namespace traefik \
+    --set providers.kubernetesIngress.allowCrossNamespace=true
 ```
 
 Next, we will be installing ArgoCD.
@@ -91,7 +93,8 @@ Next, we will be installing ArgoCD.
 kubectl create namespace argocd
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
-helm upgrade --install argocd argo/argo-cd -n argocd
+helm upgrade --install argocd argo/argo-cd \
+    --namespace argocd
 ```
 
 Run the following command to get your login password, username is admin.
@@ -104,5 +107,6 @@ To install our new helm chart run the following command
 
 ```
 kubectl create namespace voting-app
-helm upgrade --install -f chart/values.yaml voting-app ./chart -n voting-app
+helm upgrade --install -f chart/values.yaml voting-app ./chart \
+    --namespace voting-app
 ```
