@@ -74,19 +74,44 @@ docker compose up --detach
 
 If you recieve an error, make sure you're within the DevSecOps-Course directory.
 
-### Lab 3 - Deploying a Department of Defense Software Factory
+### Lab 4 - Deploying a Department of Defense Software Factory
 
-Begin first by installing ArgoCD, run the following installation script to begin
-
-```
-kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds\?ref\=stable
-```
-
-Next will be installing Traefik, that will be our ingress controller which allows access
-to our applications external to the Kubernetes cluster.
+Begin first by installing Traefik as our ingress controller, this allows for external access to our application, without it network connections can only be internal to the Kubernetes cluster network. With these steps, this will add the Traefik Helm Chart and later install it.
 
 ```
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm install traefik traefik/traefik
+helm upgrade --install traefik traefik/traefik -n traefik
+```
+
+Now, add the ArgoCD repository necessary for the installation.
+
+```
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+```
+
+Create an ArgoCD namespace for added isolation from other running Kubernetes services.
+
+```
+kubectl create namespace argocd
+```
+
+Now to install ArgoCD.
+
+```
+helm upgrade --install argocd argo/argo-cd -n argocd
+```
+
+Run the following command to get your login password, username is admin
+
+```
+kubectl get secret argocd-initial-admin-secret -n argocd \
+  -o jsonpath="{.data.password}" | base64 -d
+```
+
+To install our new helm chart run the following command
+
+```
+helm upgrade --install -f chart/values.yaml voting-app ./chart -n voting-app
 ```
