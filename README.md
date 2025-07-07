@@ -30,7 +30,7 @@ After, run the following command to remove the container on your laptop.
 docker rm nginx-example
 ```
 
-### Lab 3 - Create your first developer tokens to run a CI/CD pipeline
+### Lab 2 - Create your first developer tokens to run a CI/CD pipeline
 
 1. Fork the repository on DevSecOps-Course which will create your own working copy. 
 2. Go under settings
@@ -44,11 +44,23 @@ docker rm nginx-example
 Below are additional screen shots to assist you on doing those 5 tasks. 
 
 <img src="images/settings.png">
+<br>
 <img src="images/developer-settings.png">
+<br>
 <img src="images/tokens-classic.png">
+<br>
 <img src="images/tokens-classic-creation.png">
+<br>
 
-### Lab 2 - Running your first container orchestration
+After the tokens are created, in order to run CI/CD pipelines using my existing GitHub Actions workflows, you need to copy and paste your newly generated token as a secret. 
+1. Create a new repository secret under Actions secrets and variables
+2. Name the secret REGISTRY_TOKEN (or else the pipeline will break)
+3. Paste the value of the newly generated token in the previous steps
+
+<img src="images/settings-secrets.png">
+<br>
+
+### Lab 3 - Running your first container orchestration
 
 This one will be really short, but essentially run the following command to deploy the 
 voting application using the following docker-compose.yml file given within the 
