@@ -79,39 +79,30 @@ If you recieve an error, make sure you're within the DevSecOps-Course directory.
 Begin first by installing Traefik as our ingress controller, this allows for external access to our application, without it network connections can only be internal to the Kubernetes cluster network. With these steps, this will add the Traefik Helm Chart and later install it.
 
 ```
+kubectl create namespace traefik
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
 helm upgrade --install traefik traefik/traefik -n traefik
 ```
 
-Now, add the ArgoCD repository necessary for the installation.
-
-```
-helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update
-```
-
-Create an ArgoCD namespace for added isolation from other running Kubernetes services.
+Next, we will be installing ArgoCD.
 
 ```
 kubectl create namespace argocd
-```
-
-Now to install ArgoCD.
-
-```
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
 helm upgrade --install argocd argo/argo-cd -n argocd
 ```
 
-Run the following command to get your login password, username is admin
+Run the following command to get your login password, username is admin.
 
 ```
-kubectl get secret argocd-initial-admin-secret -n argocd \
-  -o jsonpath="{.data.password}" | base64 -d
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
 
 To install our new helm chart run the following command
 
 ```
+kubectl create namespace voting-app
 helm upgrade --install -f chart/values.yaml voting-app ./chart -n voting-app
 ```

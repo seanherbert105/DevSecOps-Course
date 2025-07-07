@@ -1,6 +1,7 @@
 # Global Configuration
 githubRegistry: ghcr.io
 dockerRegistry: docker.io
+namespace: voting-app
 
 vote:
   name: vote
@@ -9,8 +10,7 @@ vote:
   tag: main
   replicaCount: 1
   port: 8080
-  targetPort: 80
-  nodePort: 31000
+  targetPort: 8080
 
 result:
   name: result
@@ -19,8 +19,7 @@ result:
   tag: main
   replicaCount: 1
   port: 8001
-  targetPort: 80
-  nodePort: 31000
+  targetPort: 8001
 
 worker:
   name: worker

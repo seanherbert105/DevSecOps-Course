@@ -1,10 +1,10 @@
----
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ .Values.db.name }}
+  namespace: {{ .Values.namespace }}           # <-- Add this line
   labels:
     app: {{ .Values.db.name }}
-  name: {{ .Values.db.name }}
 spec:
   type: ClusterIP
   ports:
@@ -15,22 +15,26 @@ spec:
     app: {{ .Values.db.name }}
 
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.db.configMap }}
+  namespace: {{ .Values.namespace }}            # <-- Add here too
 data:
   POSTGRES_DB: votingapp
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
 
 ---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: {{ .Values.db.name }}
+  namespace: {{ .Values.namespace }}            # <-- And here
   labels:
     app: {{ .Values.db.name }}
-  name: {{ .Values.db.name }}
 spec:
   replicas: {{ .Values.db.replicaCount }}
   selector:
@@ -55,4 +59,4 @@ spec:
           name: {{ .Values.db.data }}
       volumes:
       - name: {{ .Values.db.data }}
-        emptyDir: {} 
+        emptyDir: {}

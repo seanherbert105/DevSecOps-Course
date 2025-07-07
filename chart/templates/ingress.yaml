@@ -5,10 +5,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web
-    traefik.ingress.kubernetes.io/router.middlewares: argocd@kubernetescrd
 spec:
   rules:
-  - host: vote.local
+  - host: vote.localhost
     http:
       paths:
       - path: /
@@ -23,6 +22,7 @@ spec:
         backend:
           service:
             name: result-service
+            namespace: voting-app
             port:
               number: 8081
 
@@ -34,5 +34,6 @@ spec:
         backend:
           service:
             name: argocd-server
+            namespace: argocd
             port:
               number: 80

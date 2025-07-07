@@ -1,10 +1,10 @@
----
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ .Values.redis.name }}
+  namespace: {{ .Values.namespace }}       # <--- add here
   labels:
     app: {{ .Values.redis.name }}
-  name: {{ .Values.redis.name }}
 spec:
   type: ClusterIP
   ports:
@@ -15,12 +15,14 @@ spec:
     app: {{ .Values.redis.name }}
 
 ---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: {{ .Values.redis.name }}
+  namespace: {{ .Values.namespace }}       # <--- and here
   labels:
     app: {{ .Values.redis.name }}
-  name: {{ .Values.redis.name }}
 spec:
   replicas: {{ .Values.redis.replicaCount }}
   selector:
@@ -42,4 +44,4 @@ spec:
           name: {{ .Values.redis.data }}
       volumes:
       - name: {{ .Values.redis.data }}
-        emptyDir: {} 
+        emptyDir: {}
