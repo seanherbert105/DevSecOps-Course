@@ -14,17 +14,18 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: vote-service
+            name: {{ .Values.vote.serviceName }}
+            namespace: {{ .Values.namespace }}
             port:
-              number: 8080
+              number: {{ .Values.vote.port }}
       - path: /results
         pathType: Prefix
         backend:
           service:
-            name: result-service
-            namespace: voting-app
+            name: {{ .Values.result.serviceName }}
+            namespace: {{ .Values.namespace }}
             port:
-              number: 8081
+              number: {{ .Values.result.port }}
 
   - host: argocd.localhost
     http:
