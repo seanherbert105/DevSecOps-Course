@@ -76,25 +76,16 @@ If you recieve an error, make sure you're within the DevSecOps-Course directory.
 
 ### Lab 4 - Deploying a Department of Defense Software Factory
 
-Begin first by installing Traefik as our ingress controller, this allows for external access to our application, without it network connections can only be internal to the Kubernetes cluster network. With these steps, this will add the Traefik Helm Chart and later install it.
-
-```
-kubectl create namespace traefik
-helm repo add traefik https://traefik.github.io/charts
-helm repo update
-helm upgrade --install traefik traefik/traefik \
-    --namespace traefik \
-    --set providers.kubernetesIngress.allowCrossNamespace=true
-```
-
-Next, we will be installing ArgoCD.
+First, we will be installing ArgoCD.
 
 ```
 kubectl create namespace argocd
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 helm upgrade --install argocd argo/argo-cd \
-    --namespace argocd
+  --namespace argocd \
+  --create-namespace \
+  --set server.service.type=NodePort
 ```
 
 Run the following command to get your login password, username is admin.
