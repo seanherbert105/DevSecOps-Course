@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.result.name }}
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - name: {{ .Values.result.serviceName }}
     port: {{ .Values.result.port }}
