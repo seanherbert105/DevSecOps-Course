@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.db.name }}
-  namespace: {{ .Values.namespace }}           # <-- Add this line
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.db.name }}
 spec:
@@ -20,7 +20,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.db.configMap }}
-  namespace: {{ .Values.namespace }}            # <-- Add here too
+  namespace: {{ .Values.namespace }}
 data:
   POSTGRES_DB: votingapp
   POSTGRES_USER: postgres

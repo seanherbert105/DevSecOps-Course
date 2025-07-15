@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.redis.name }}
-  namespace: {{ .Values.namespace }}       # <--- add here
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.redis.name }}
 spec:
@@ -20,7 +20,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Values.redis.name }}
-  namespace: {{ .Values.namespace }}       # <--- and here
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.redis.name }}
 spec:

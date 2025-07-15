@@ -11,6 +11,7 @@ vote:
   replicaCount: 1
   port: 8080
   targetPort: 8080
+  nodePort: 31000
 
 result:
   name: result
@@ -20,6 +21,7 @@ result:
   replicaCount: 1
   port: 8001
   targetPort: 8001
+  nodePort: 31001
 
 worker:
   name: worker
