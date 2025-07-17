@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.redis.name }}
+  name: {{ .Values.redis.serviceName }}
   labels:
     app: {{ .Values.redis.name }}
 spec:
