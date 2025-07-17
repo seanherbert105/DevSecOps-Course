@@ -2,10 +2,6 @@
 githubRegistry: ghcr.io
 dockerRegistry: docker.io
 
-ingres:
-  name: voting-app-ingress
-  host: votingapp.local
-
 vote:
   name: vote
   serviceName: vote-service
