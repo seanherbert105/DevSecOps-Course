@@ -32,7 +32,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Values.db.name }}
-  namespace: {{ .Values.namespace }}            # <-- And here
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.db.name }}
 spec:
@@ -50,7 +50,7 @@ spec:
         name: {{ .Values.db.name }}
         envFrom:
         - configMapRef:
-            name: {{ .Values.db.config_map }}
+            name: {{ .Values.db.configMap }}
         ports:
         - containerPort: {{ .Values.db.port }}
           name: {{ .Values.db.serviceName }}
