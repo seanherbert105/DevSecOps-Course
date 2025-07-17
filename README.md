@@ -86,12 +86,14 @@ After the tokens are created, in order to run CI/CD pipelines using my existing 
 
 ## Lab 3 - Running your first container orchestration
 
-This one will be really short, but essentially run the following command to deploy the 
-voting application using the following docker-compose.yml file given within the 
-root file directory. 
+This one will be really short, but essentially run the following command to deploy the voting application using the following docker-compose.yml file given within the root file directory. 
 
-First, login to your ghcr.io registry where you cloned 
+First, login to your ghcr.io registry, you will be prompted for a username and password, insert the value of the newly generated token you created in the previous lab.
+```
+docker login ghcr.io
+```
 
+Then run the container using the following command.
 ```
 docker compose up --detach
 ```
