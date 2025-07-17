@@ -5,12 +5,11 @@ metadata:
   labels:
     app: {{ .Values.vote.name }}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: {{ .Values.vote.serviceName }}
     port: {{ .Values.vote.port }}
     targetPort: {{ .Values.vote.targetPort }}
-    nodePort: {{ .Values.vote.nodePort }}
   selector:
     app: {{ .Values.vote.name }}
 

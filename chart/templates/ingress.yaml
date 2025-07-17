@@ -15,11 +15,11 @@ spec:
           service:
             name: {{ .Values.vote.serviceName }}
             port:
-              number: {{ .Values.vote.port }}
+              number: {{ .Values.vote.targetPort }}
       - path: /result
         pathType: Prefix
         backend:
           service:
             name: {{ .Values.result.serviceName }}
             port:
-              number: {{ .Values.result.port }}
+              number: {{ .Values.result.targetPort }}
