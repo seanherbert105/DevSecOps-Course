@@ -2,10 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.ingress.name }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx-example
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
