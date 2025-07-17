@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.db.name }}
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.db.name }}
 spec:
@@ -20,7 +19,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.db.configMap }}
-  namespace: {{ .Values.namespace }}
 data:
   POSTGRES_DB: votingapp
   POSTGRES_USER: postgres
@@ -32,7 +30,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Values.db.name }}
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.db.name }}
 spec:

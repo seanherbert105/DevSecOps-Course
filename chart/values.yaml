@@ -1,7 +1,6 @@
 # Global Configuration
 githubRegistry: ghcr.io
 dockerRegistry: docker.io
-namespace: voting-app
 
 vote:
   name: vote
