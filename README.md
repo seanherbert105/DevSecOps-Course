@@ -94,6 +94,14 @@ Run the following command to get your login password, username is admin.
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
 
+In order to access the Voting App, you need to install what is called an ingress controller. NGINX is the most popular and widely used.
+
+```
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace
+```
+
 To install our new helm chart run the following command
 
 ```
