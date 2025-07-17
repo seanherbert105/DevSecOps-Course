@@ -28,7 +28,7 @@ worker:
 
 redis:
   name: redis
-  serviceName: redis-service
+  serviceName: redis
   data: redis-data
   image: redis
   tag: alpine
@@ -38,7 +38,7 @@ redis:
 
 db:
   name: db
-  serviceName: db-service
+  serviceName: db
   configMap: db-config
   data: db-data
   image: postgres
