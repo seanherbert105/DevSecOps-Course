@@ -62,6 +62,7 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'voting-app-worker.sarif'
+          severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
