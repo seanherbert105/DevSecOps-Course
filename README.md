@@ -1,46 +1,109 @@
-# DevSecOps Course Labs
+## Hands-On Labs (Highly Recommended)
+The hands-on labs in this course are **completely optional**, but they are **strongly recommended**.
 
-The hands on labs in this course are completely optional, but highly recommended.
-There is no better way to understand how this works in further detail than to try.
+Reading and watching videos can build awareness, but **doing the work yourself** is the fastest and most effective way to truly understand DevSecOps concepts. These labs are designed to help you:
+- Build real-world skills
+- Gain confidence using industry-standard tools
+- Understand how systems work together in practice
+- Learn how DevSecOps engineers solve real problems
+
+If you want to get the **most value** from this course, completing the labs is highly encouraged.
+
+---
 
 ## Getting Started
+Below are the recommended tools to install on your personal computer to get the **best hands-on learning experience**. These are widely used across the DevSecOps industry and will help prepare you for real-world environments.
 
-These are great software tools to install on your personal computer to get the best hands on experience doing the work of a DevSecOps Engineer.
+---
+
+## Required / Recommended Software
 
 ### Docker Desktop
 
-Windows
-<a>https://docs.docker.com/desktop/setup/install/windows-install/</a>
+Docker allows you to run applications in containers, which is a core skill for DevSecOps engineers.
 
-MAC
-<a>https://docs.docker.com/desktop/setup/install/mac-install/</a>
+**Install Docker Desktop for your operating system:**
 
-### Visual Studio Code
+- **Windows:**  
+  https://docs.docker.com/desktop/setup/install/windows-install/
 
-<a>https://code.visualstudio.com/download</a>
+- **macOS:**  
+  https://docs.docker.com/desktop/setup/install/mac-install/
 
-### Windows Subsystem for Linux (WSL)
+> Tip: Docker Desktop includes Kubernetes, which may be used later in the course.
 
-This allows for Windows to use what is called a Linux terminal. It allows for you to run the type of software necessary for the course, and it's the most widely used computer Operating System.
+---
 
-<a>https://learn.microsoft.com/en-us/windows/wsl/install</a>
+### Visual Studio Code (VS Code)
+Visual Studio Code is a lightweight but powerful code editor used throughout the industry.
 
-### MAC
+It will be used for:
+- Writing code and configuration files
+- Editing YAML and Terraform files
+- Working with Git repositories
+- Interacting with containers and Kubernetes
 
-By default, MAC does have a terminal installed, but you need to install a package manager called Homebrew.
-<a>https://brew.sh/</a>
+**Download:**  
+https://code.visualstudio.com/download
+
+---
+
+### Windows Subsystem for Linux (WSL) — *Windows Users Only*
+WSL allows Windows to run a **Linux terminal environment**, which is essential for many DevSecOps tools.
+
+Why WSL matters:
+- Most DevOps tooling is designed for Linux
+- Matches production environments more closely
+- Eliminates many compatibility issues on Windows
+
+**Install WSL:**  
+https://learn.microsoft.com/en-us/windows/wsl/install
+
+> Recommended distribution: **Ubuntu (latest version)**
+
+---
+
+### macOS Terminal & Homebrew — *macOS Users Only*
+
+macOS includes a built-in terminal by default. However, you will need a package manager called **Homebrew** to easily install development tools.
+
+**Install Homebrew:**
+https://brew.sh/
+
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 ### Helm
+Helm is the package manager for Kubernetes. It simplifies deploying and managing applications in a Kubernetes cluster.
 
+Helm will be used in later labs to:
+
+Deploy applications
+
+Manage Kubernetes configurations
+
+Work with industry-standard charts
+
+Installation instructions:
 <a>https://helm.sh/docs/intro/install/</a>
 
 ### Create a GitHub account
+A GitHub account is required for this course.
 
-It's FREE! Also, it's a great way to show off your ability with coding skills to future employers. Many use this to land this first jobs in Software Engineer.
+Why GitHub matters:
 
+Hosts your code and configurations
+
+Tracks your progress over time
+
+Demonstrates your skills to future employers
+
+Used by nearly every DevSecOps and software team
+
+GitHub is free and widely recognized in the industry.
+
+Create an account:
 <a>https://www.github.com</a>
 
 ## Lab 1 - Running your first container
