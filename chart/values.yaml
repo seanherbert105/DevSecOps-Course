@@ -8,7 +8,7 @@ vote:
   image: seanherbert105/devsecops-course/voting-app/vote
   tag: main
   replicaCount: 1
-  port: 8080
+  port: 8081
   targetPort: 80
 
 result:
@@ -17,7 +17,7 @@ result:
   image: seanherbert105/devsecops-course/voting-app/result
   tag: main
   replicaCount: 1
-  port: 8001
+  port: 8082
   targetPort: 80
 
 worker:
